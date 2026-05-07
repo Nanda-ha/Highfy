@@ -1,0 +1,105 @@
+<a 
+  href="#contact" 
+  className="hidden md:block bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-slate-900 px-6 py-3 rounded-full font-semibold transition-all duration-300 shadow-gold hover:shadow-gold/50 transform hover:scale-105"
+>
+  Join Now
+</a>
+
+{/* Mobile Menu Button */}
+<button
+  onClick={() => setIsOpen(!isOpen)}
+  className="md:hidden text-amber-400 text-2xl"
+>
+  ☰
+</button>
+</div>
+
+{/* Mobile Menu */}
+{isOpen && (
+  <div className="md:hidden bg-slate-900/95 backdrop-blur-xl rounded-2xl mt-4 p-4">
+    {navLinks.map((link) => (
+      <a
+        key={link.id}
+        href={`#${link.id}`}
+        onClick={() => setIsOpen(false)}
+        className="block py-3 text-slate-300 hover:text-amber-400 transition"
+      >
+        {link.label}
+      </a>
+    ))}
+  </div>
+)}
+</div>
+</nav>
+);
+};
+
+// Main App
+const App = () => {
+const [activeSection, setActiveSection] = useState('hero');
+
+useEffect(() => {
+  const handleScroll = () => {
+    const sections = ['hero', 'about', 'programs', 'gallery', 'testimonials', 'contact'];
+    
+    sections.forEach((section) => {
+      const element = document.getElementById(section);
+      if (element) {
+        const rect = element.getBoundingClientRect();
+        if (rect.top <= 100 && rect.bottom >= 100) {
+          setActiveSection(section);
+        }
+      }
+    });
+  };
+
+  window.addEventListener('scroll', handleScroll);
+  return () => window.removeEventListener('scroll', handleScroll);
+}, []);
+
+return (
+  <div className="bg-slate-950 text-white min-h-screen">
+    <Navbar activeSection={activeSection} />
+
+    <section id="hero" className="h-screen flex items-center justify-center text-center">
+      <div>
+        <h1 className="text-6xl font-sanskrit text-amber-400 mb-6">
+          Natya Veda
+        </h1>
+        <p className="text-xl text-slate-300 mb-8">
+          Bharatanatyam Academy
+        </p>
+        <a
+          href="#contact"
+          className="bg-amber-500 hover:bg-amber-600 text-slate-900 px-8 py-4 rounded-full font-bold transition"
+        >
+          Enroll Now
+        </a>
+      </div>
+    </section>
+
+    <section id="about" className="py-20 text-center">
+      <h2 className="text-4xl font-sanskrit text-amber-400 mb-4">
+        About Guru
+      </h2>
+      <p className="max-w-2xl mx-auto text-slate-300">
+        Learn Bharatanatyam from experienced classical dance teachers with tradition and elegance.
+      </p>
+    </section>
+
+    <section id="contact" className="py-20 text-center">
+      <h2 className="text-4xl font-sanskrit text-amber-400 mb-4">
+        Contact Us
+      </h2>
+      <p className="text-slate-300">📞 +91 9876543210</p>
+      <p className="text-slate-300">📧 info@natyaveda.com</p>
+    </section>
+  </div>
+);
+};
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(<App />);
+</script>
+</body>
+</html>
