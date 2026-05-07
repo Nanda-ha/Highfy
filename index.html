@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Natya Veda - Bharatanatyam Academy</title>
+  <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+  
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            'sanskrit': ['Playfair Display', 'serif'],
+          },
+          animation: {
+            'float': 'float 6s ease-in-out infinite',
+            'dance': 'dance 3s ease-in-out infinite',
+          }
+        },
+      }
+    }
+  </script>
+  
+  <style>
+    @layer utilities {
+      .font-sanskrit {
+        font-family: 'Playfair Display', serif;
+        font-weight: 700;
+      }
+      .shadow-gold {
+        box-shadow: 0 25px 50px -12px rgb(251 191 36 / 0.4);
+      }
+      .shadow-gold\/50 {
+        box-shadow: 0 25px 50px -12px rgb(251 191 36 / 0.15);
+      }
+      .animate-float {
+        animation: float 6s ease-in-out infinite;
+      }
+      .animate-float-slow {
+        animation: float 8s ease-in-out infinite;
+      }
+      .animate-dance {
+        animation: dance 3s ease-in-out infinite;
+      }
+      .animate-tilt {
+        animation: tilt 1s ease-in-out;
+      }
+      @keyframes float {
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(-20px); }
+      }
+      @keyframes dance {
+        0%, 100% { transform: rotate(0deg) scale(1); }
+        25% { transform: rotate(5deg) scale(1.05); }
+        75% { transform: rotate(-3deg) scale(1.03); }
+      }
+      @keyframes tilt {
+        0% { transform: rotate(0deg); }
+        50% { transform: rotate(2deg); }
+        100% { transform: rotate(0deg); }
+      }
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Playfair Display', serif; }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { useState, useEffect, useCallback } = React;
+
+    // Navbar Component
+    const Navbar = ({ activeSection }) => {
+      const [isOpen, setIsOpen] = useState(false);
+      const [scrolled, setScrolled] = useState(false);
+
+      useEffect(() => {
+        const handleScroll = () => setScrolled(window.scrollY > 50);
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+      }, []);
+
+      const navLinks = [
+        { id: 'hero', label: 'Home' },
+        { id: 'about', label: 'Guru' },
+        { id: 'programs', label: 'Programs' },
+        { id: 'gallery', label: 'Gallery' },
+        { id: 'testimonials', label: 'Testimonials' },
+        { id: 'contact', label: 'Contact' }
+      ];
+
+      return (
+        <nav className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${scrolled ? 'bg-slate-900/95 backdrop-blur-xl shadow-2xl' : 'bg-transparent'}`}>
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex justify-between items-center py-4 md:py-6">
+              <div className="flex items-center space-x-2">
+                <div className="w-10 h-10 bg-gradient-to-r from-amber-400 to-amber-600 rounded-xl shadow-gold flex items-center justify-center">
+                  <span className="text-xl font-bold text-slate-900">🕉</span>
+                </div>
+                <span className="text-2xl md:text-3xl font-sanskrit font-bold bg-gradient-to-r from-amber-400 via-amber-300 to-yellow-400 bg-clip-text text-transparent">
+                  Natya Veda
+                </span>
+              </div>
+
+              <div className="hidden md:flex items-center space-x-8">
+                {navLinks.map((link) => (
+                  <a
+                    key={link.id}
+                    href={`#${link.id}`}
+                    className={`relative group py-2 px-3 font-medium transition-all duration-300 ${
+                      activeSection === link.id ? 'text-amber-400' : 'text-slate-300 hover:text-amber-300'
+                    }`}
+                  >
+                    {link.label}
+                    <span className={`absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-amber-400 to-yellow-400 transition-all duration-300 group-hover:w-full ${activeSection === link.id ? 'w-full' : ''}`} />
+                  </a>
+                ))}
+              </div>
+
+              <a href="#contact" className="hidden md:block bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-
